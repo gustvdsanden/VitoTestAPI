@@ -24,6 +24,8 @@ namespace VitoTestAPI.Models
         public DbSet<SensorType> SensorTypes { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<Location> Locations { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseNpgsql("Host=localhost;Database=test;Username=postgres;Password=test");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,9 +38,9 @@ namespace VitoTestAPI.Models
             modelBuilder.Entity<SensorBox>().ToTable("SensorBox");
             modelBuilder.Entity<SensorBox> ().HasKey(sb => new { sb.BoxID, sb.SensorID });
             modelBuilder.Entity<SensorBox>().HasOne(sb => sb.Box).WithMany(b => b.SensorBoxes);
-            modelBuilder.Entity<SensorBox>().HasOne(sb => sb.Sensor).WithMany(s => s.SensorBoxes);
             modelBuilder.Entity<SensorType>().ToTable("SensorType");
             modelBuilder.Entity<Measurement>().ToTable("Measurement");
+            modelBuilder.Entity<Measurement>().HasOne(sb => sb.SensorBox).WithMany(m => m.Measurements).HasForeignKey(sb=>new { sb.SensorID,sb.BoxID});
             modelBuilder.Entity<Location>().ToTable("Location");
 
 

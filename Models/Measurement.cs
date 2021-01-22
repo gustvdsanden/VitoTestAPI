@@ -13,8 +13,7 @@ namespace VitoTestAPI.Models
         
         //relations
         public int BoxID { get; set; }
-        public Box Box { get; set; }
         public int SensorID { get; set; }
-        public Sensor Sensor { get; set; }
+        public SensorBox SensorBox { get; set; }
     }
 }

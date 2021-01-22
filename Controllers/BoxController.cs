@@ -32,6 +32,14 @@ namespace VitoTestAPI.Controllers
 
             return await _context.Boxes.ToListAsync();
         }
+        //GET: api/Box/Sensor/Measurements
+        [Authorize]
+        [HttpGet("Sensors/Measurements")]
+        public async Task<ActionResult<IEnumerable<Box>>> GetBoxesWithSensorsAndMeasurements()
+        {
+
+            return await _context.Boxes.Include(box => box.SensorBoxes).ThenInclude(sb => sb.Measurements).Include(box=>box.SensorBoxes).ThenInclude(sb =>sb.Sensor).ToListAsync();
+        }
 
         //GET: api/Box/{BoxID}
         [Authorize]

@@ -13,5 +13,6 @@ namespace VitoTestAPI.Models
         public string Comment { get; set; }
         public bool Active { get; set; }
         public ICollection<SensorBox> SensorBoxes { get; set; }
+        public ICollection<Monitoring> Monitorings { get; set; }
     }
 }

@@ -33,6 +33,28 @@ namespace VitoTestAPI.Models
                 new Box { MacAddress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
                 );
             context.SaveChanges();
+            context.SensorTypes.AddRange(
+                new SensorType { Name = "temperatuur", Unit="C" },
+                new SensorType { Name = "windsnelheid", Unit = "km/u" }
+                );
+            context.SaveChanges();
+            context.Sensors.AddRange(
+                new Sensor { Name="Grondtemperatuur", SensorTypeID=1},
+                new Sensor { Name = "Luchttemperatuur", SensorTypeID = 1 },
+                new Sensor { Name = "Windsnelheid", SensorTypeID = 2 }
+                );
+            context.SaveChanges();
+            context.SensorBoxes.AddRange(
+                new SensorBox { SensorID=1 ,BoxID=1 },
+                new SensorBox { SensorID = 1, BoxID = 2 },
+                new SensorBox { SensorID = 2, BoxID = 1 }
+                );
+            context.SaveChanges();
+            context.Measurements.AddRange(
+                new Measurement { DateTime=new DateTime(), SensorID = 1, BoxID = 1, Value = "34" },
+                new Measurement { DateTime = new DateTime(), SensorID = 2, BoxID = 1, Value = "11" }
+                );
+            context.SaveChanges();
         }
     }
 }

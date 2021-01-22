@@ -9,10 +9,8 @@ namespace VitoTestAPI.Models
     {
         public int SensorID { get; set; }
         public string Name { get; set; }
-        public string UniqueID { get; set; }
         //relations
         public int SensorTypeID { get; set; }
         public SensorType SensorType { get; set; }
-        public ICollection<SensorBox> SensorBoxes { get; set; }
     }
 }
