@@ -28,9 +28,9 @@ namespace VitoTestAPI.Models
                 );
             context.SaveChanges();
             context.Boxes.AddRange(
-                new Box { MacAddress = "123ABC", Name = "SensorBox 1b",Comment="De box van team 1", Active = true},
-                new Box { MacAddress = "123ABC", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
-                new Box { MacAddress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
+                new Box { MacAdress = "123ABC", Name = "SensorBox 1b",Comment="De box van team 1", Active = true},
+                new Box { MacAdress = "123ABC", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAdress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
                 );
             context.SaveChanges();
             context.SensorTypes.AddRange(
@@ -51,8 +51,8 @@ namespace VitoTestAPI.Models
                 );
             context.SaveChanges();
             context.Measurements.AddRange(
-                new Measurement { DateTime=new DateTime(), SensorID = 1, BoxID = 1, Value = "34" },
-                new Measurement { DateTime = new DateTime(), SensorID = 2, BoxID = 1, Value = "11" }
+                new Measurement { TimeStamp = new DateTime(), SensorID = 1, BoxID = 1, Value = "34" },
+                new Measurement { TimeStamp = new DateTime(), SensorID = 2, BoxID = 1, Value = "11" }
                 );
             context.SaveChanges();
         }

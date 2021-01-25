@@ -23,7 +23,7 @@ namespace VitoTestAPI.Controllers
 
         }
         //GET: api/Sensor
-        [Authorize]
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensors()
         {
@@ -31,7 +31,7 @@ namespace VitoTestAPI.Controllers
             return await _context.Sensors.ToListAsync();
         }
         //GET: api/Sensor/Box
-        [Authorize]
+
         [HttpGet("Box")]
         public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsWithBoxes()
         {
@@ -40,7 +40,7 @@ namespace VitoTestAPI.Controllers
         }
 
         //GET: api/Sensor/{SensorID}
-        [Authorize]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Sensor>> GetSensorByID(int id)
         {
@@ -60,7 +60,7 @@ namespace VitoTestAPI.Controllers
 
         // PUT: api/Sensor/{SensorID}
         [HttpPut("{id}")]
-        [Authorize]
+
         public async Task<ActionResult<Sensor>> PutSensor(int id, Sensor sensor)
         {
             if (id != sensor.SensorID)
@@ -91,7 +91,7 @@ namespace VitoTestAPI.Controllers
 
         //DELETE: api/Sensor/{BoxID}
         [HttpDelete("{id}")]
-        [Authorize]
+
         public async Task<ActionResult<Sensor>> DeleteSensor(int id)
         {
             var sensor = await _context.Sensors.FindAsync(id);

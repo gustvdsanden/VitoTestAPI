@@ -25,7 +25,7 @@ namespace VitoTestAPI.Controllers
 
         }
         //GET: api/Box
-        [Authorize]
+     
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Box>>> GetBoxes()
         {
@@ -33,7 +33,7 @@ namespace VitoTestAPI.Controllers
             return await _context.Boxes.ToListAsync();
         }
         //GET: api/Box/Sensor/Measurements
-        [Authorize]
+     
         [HttpGet("Sensors/Measurements")]
         public async Task<ActionResult<IEnumerable<Box>>> GetBoxesWithSensorsAndMeasurements()
         {
@@ -42,7 +42,7 @@ namespace VitoTestAPI.Controllers
         }
 
         //GET: api/Box/{BoxID}
-        [Authorize]
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Box>> GetBoxByID(int id)
         {
@@ -62,7 +62,7 @@ namespace VitoTestAPI.Controllers
 
         // PUT: api/Box/{BoxID}
         [HttpPut("{id}")]
-        [Authorize]
+  
         public async Task<ActionResult<Box>> PutBox(int id, Box box)
         {
             if (id != box.BoxID)
@@ -93,7 +93,7 @@ namespace VitoTestAPI.Controllers
 
         //DELETE: api/Box/{BoxID}
         [HttpDelete("{id}")]
-        [Authorize]
+
         public async Task<ActionResult<Box>> DeleteBox(int id)
         {
             var box = await _context.Boxes.FindAsync(id);

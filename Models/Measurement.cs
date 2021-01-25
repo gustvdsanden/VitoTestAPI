@@ -8,7 +8,7 @@ namespace VitoTestAPI.Models
     public class Measurement
     {
         public int MeasurementID { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime TimeStamp { get; set; }
         public string Value { get; set; }
         
         //relations

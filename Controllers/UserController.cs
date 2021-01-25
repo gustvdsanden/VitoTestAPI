@@ -37,7 +37,7 @@ namespace VitoTestAPI.Controllers
             return Ok(user);
         }
         //GET: api/User
-        [Authorize]
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -46,7 +46,7 @@ namespace VitoTestAPI.Controllers
         }
 
         //GET: api/User/{userID}
-        [Authorize]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUsersByID(int id)
         {
@@ -55,7 +55,7 @@ namespace VitoTestAPI.Controllers
        
 
         //GET: api/User/admins
-        [Authorize]
+
         [HttpGet("admins")]
         public async Task<ActionResult<IEnumerable<User>>> getAdmins()
         {
@@ -87,7 +87,7 @@ namespace VitoTestAPI.Controllers
 
         // PUT: api/User/{userID}
         [HttpPut("{id}")]
-        [Authorize]
+  
         public async Task<ActionResult<User>> PutUser(int id, User user)
         {
             if (id != user.UserID)
@@ -118,7 +118,7 @@ namespace VitoTestAPI.Controllers
 
         //DELETE: api/User/{userID}
         [HttpDelete("{id}")]
-        [Authorize]
+ 
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

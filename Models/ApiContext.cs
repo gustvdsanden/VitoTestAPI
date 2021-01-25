@@ -24,9 +24,7 @@ namespace VitoTestAPI.Models
         public DbSet<SensorType> SensorTypes { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<Location> Locations { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=test;Username=postgres;Password=test");
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");

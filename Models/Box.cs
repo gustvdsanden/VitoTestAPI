@@ -8,7 +8,7 @@ namespace VitoTestAPI.Models
     public class Box
     {
         public int BoxID { get; set; }
-        public string MacAddress { get; set; }
+        public string MacAdress { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
         public bool Active { get; set; }
