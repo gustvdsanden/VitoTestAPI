@@ -11,6 +11,7 @@ namespace VitoTestAPI.Models
         public string MacAdress { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
+        public string ConfiguratieString { get; set; }
         public bool Active { get; set; }
         public ICollection<SensorBox> SensorBoxes { get; set; }
         public ICollection<Monitoring> Monitorings { get; set; }

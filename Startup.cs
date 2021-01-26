@@ -34,6 +34,9 @@ namespace VitoTestAPI
 
             services.AddDbContext<ApiContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("ApiContext")));
+            //services.AddDbContext<ApiContext>(opt =>
+            //    opt.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
             var appSettingsSection = Configuration.GetSection("AppSettings"); services.Configure<AppSettings>(appSettingsSection);
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();

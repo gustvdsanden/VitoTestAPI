@@ -32,13 +32,14 @@ namespace VitoTestAPI.Models
             modelBuilder.Entity<BoxUser>().ToTable("BoxUser");
             modelBuilder.Entity<Box>().ToTable("Box");
             modelBuilder.Entity<Sensor>().ToTable("Sensor");
+            modelBuilder.Entity<Sensor>().HasOne(sb => sb.SensorType).WithMany(b => b.Sensors);
             modelBuilder.Entity<Monitoring>().ToTable("Monitoring");
             modelBuilder.Entity<SensorBox>().ToTable("SensorBox");
             modelBuilder.Entity<SensorBox> ().HasKey(sb => new { sb.BoxID, sb.SensorID });
             modelBuilder.Entity<SensorBox>().HasOne(sb => sb.Box).WithMany(b => b.SensorBoxes);
             modelBuilder.Entity<SensorType>().ToTable("SensorType");
             modelBuilder.Entity<Measurement>().ToTable("Measurement");
-            modelBuilder.Entity<Measurement>().HasOne(sb => sb.SensorBox).WithMany(m => m.Measurements).HasForeignKey(sb=>new { sb.SensorID,sb.BoxID});
+            modelBuilder.Entity<Measurement>().HasOne(sb => sb.SensorBox).WithMany(m => m.Measurements).HasForeignKey(sb=>new { sb.BoxID, sb.SensorID});
             modelBuilder.Entity<Location>().ToTable("Location");
 
 

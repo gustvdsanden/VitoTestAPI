@@ -11,10 +11,11 @@ namespace VitoTestAPI.Models
         {
             context.Database.EnsureCreated();
 
-            if (context.Users.Any())
+            if (context.Measurements.Any())
             {
                 return;
             }
+         
             context.UserTypes.AddRange(
                 new UserType { UserTypeName = "admin" },
                 new UserType { UserTypeName = "medewerker" },
@@ -34,25 +35,33 @@ namespace VitoTestAPI.Models
                 );
             context.SaveChanges();
             context.SensorTypes.AddRange(
-                new SensorType { Name = "temperatuur", Unit="C" },
+                new SensorType { Name = "Grondtemperatuur", Unit="C" },
+                new SensorType { Name = "Luchttemperatuur", Unit = "C" },
                 new SensorType { Name = "windsnelheid", Unit = "km/u" }
                 );
             context.SaveChanges();
             context.Sensors.AddRange(
                 new Sensor { Name="Grondtemperatuur", SensorTypeID=1},
-                new Sensor { Name = "Luchttemperatuur", SensorTypeID = 1 },
-                new Sensor { Name = "Windsnelheid", SensorTypeID = 2 }
+                new Sensor { Name = "Luchttemperatuur", SensorTypeID = 2 },
+                new Sensor { Name = "Coole sensor", SensorTypeID = 1 },
+                new Sensor { Name = "Windsnelheid", SensorTypeID = 3 }
                 );
             context.SaveChanges();
             context.SensorBoxes.AddRange(
-                new SensorBox { SensorID=1 ,BoxID=1 },
-                new SensorBox { SensorID = 1, BoxID = 2 },
-                new SensorBox { SensorID = 2, BoxID = 1 }
+                new SensorBox {  BoxID = 1, SensorID =1  },
+                new SensorBox { BoxID = 1, SensorID = 2 },
+                new SensorBox { BoxID = 1, SensorID = 3 },
+                new SensorBox { BoxID = 1, SensorID = 4 },
+                new SensorBox { BoxID = 2, SensorID = 1 },
+                new SensorBox { BoxID = 2, SensorID = 2 }
+
                 );
             context.SaveChanges();
             context.Measurements.AddRange(
-                new Measurement { TimeStamp = new DateTime(), SensorID = 1, BoxID = 1, Value = "34" },
-                new Measurement { TimeStamp = new DateTime(), SensorID = 2, BoxID = 1, Value = "11" }
+                new Measurement { TimeStamp = DateTime.Now, SensorID = 1, BoxID = 1, Value = "34" },
+                new Measurement { TimeStamp = DateTime.Now, SensorID = 2, BoxID = 1, Value = "11" },
+                new Measurement { TimeStamp = DateTime.Now, SensorID = 1, BoxID = 1, Value = "12" },
+                new Measurement { TimeStamp = DateTime.Now, SensorID = 3, BoxID = 1, Value = "12" }
                 );
             context.SaveChanges();
         }
