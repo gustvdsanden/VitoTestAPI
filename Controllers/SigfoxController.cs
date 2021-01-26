@@ -31,7 +31,7 @@ namespace VitoTestAPI.Controllers
         public async Task PostSigfoxData(string callback)
         {
             string[] items = callback.Split(',');
-            Box box = _context.Boxes.FirstOrDefault(b => b.MacAdress == items[0]);
+            Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == items[0]);
             if (box==null)
             {
                 return;

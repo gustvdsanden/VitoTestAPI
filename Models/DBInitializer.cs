@@ -11,7 +11,7 @@ namespace VitoTestAPI.Models
         {
             context.Database.EnsureCreated();
 
-            if (context.Measurements.Any())
+            if (context.Users.Any())
             {
                 return;
             }
