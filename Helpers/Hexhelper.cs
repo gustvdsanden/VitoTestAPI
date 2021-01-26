@@ -43,7 +43,7 @@ namespace VitoTestAPI.Helpers
         {
 
             List<string> monitoringWaarden = new List<string>();
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 3; i++)
             {
                 string val = Convert.ToString( bytetodec(binary[0] + binary[1]));
                 monitoringWaarden.Add(val);

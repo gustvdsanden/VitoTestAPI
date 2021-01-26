@@ -29,9 +29,9 @@ namespace VitoTestAPI.Models
                 );
             context.SaveChanges();
             context.Boxes.AddRange(
-                new Box { MacAdress = "123ABC", Name = "SensorBox 1b",Comment="De box van team 1", Active = true},
-                new Box { MacAdress = "123ABC", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
-                new Box { MacAdress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
+                new Box { MacAddress = "123ABC", Name = "SensorBox 1b",Comment="De box van team 1", Active = true},
+                new Box { MacAddress = "123ABC", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
                 );
             context.SaveChanges();
             context.SensorTypes.AddRange(
