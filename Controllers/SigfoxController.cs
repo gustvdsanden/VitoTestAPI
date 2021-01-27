@@ -27,16 +27,16 @@ namespace VitoTestAPI.Controllers
         }
         
         //POST: api/Sigfox/PostData
-        [HttpPost("PostData")]
-        public async Task PostSigfoxData(string callback)
+        [HttpPost("PostData/{callback}/{device}")]
+        public async Task PostSigfoxData(string callback,string device)
         {
-            string[] items = callback.Split(',');
-            Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == items[0]);
+
+            Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == device);
             if (box==null)
             {
                 return;
             }
-            List<string> sigfoxData = Helpers.Hexhelper.HexConv(items[1]);
+            List<string> sigfoxData = Helpers.Hexhelper.HexConv(callback);
             if (sigfoxData[0]== "1")
             {
                 sigfoxData.Remove("1");
@@ -81,6 +81,7 @@ namespace VitoTestAPI.Controllers
             {
                 sigfoxData.Remove("3");
                 //snapshot
+                return;
             }
                 return ;
         }

@@ -10,6 +10,7 @@ using VitoTestAPI.Models;
 using Microsoft.OpenApi.Models;
 using VitoTestAPI.Helpers;
 using System.Text;
+
 using Microsoft.IdentityModel.Tokens;
 using VitoTestAPI.Services;
 
@@ -23,7 +24,7 @@ namespace VitoTestAPI
         }
 
         public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {

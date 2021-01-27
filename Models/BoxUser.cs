@@ -9,7 +9,7 @@ namespace VitoTestAPI.Models
     {
         public int BoxUserID { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         //Relations
         public int BoxID { get; set; }

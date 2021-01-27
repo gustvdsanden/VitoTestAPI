@@ -41,7 +41,6 @@ namespace VitoTestAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-
             return await _context.Users.ToListAsync();
         }
 
