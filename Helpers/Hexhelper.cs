@@ -14,7 +14,7 @@ namespace VitoTestAPI.Helpers
             int Calltype = 0;
             string temp = "";
             binary.AddRange(hextobinary(hex));
-            
+
             temp = binary[0] + binary[1];
             Calltype = Convert.ToInt32(temp, 2);
             callwaarden.Add(Calltype.ToString());
@@ -27,11 +27,11 @@ namespace VitoTestAPI.Helpers
                     callwaarden.AddRange(Bytointmeting(binary));
                     break;
                 case 2:
-                        callwaarden.AddRange(Bytointmeting(binary));
+                    callwaarden.AddRange(Bytointmeting(binary));
                     break;
                 case 3:
-                    
-                      callwaarden.AddRange(monitoring(binary));
+
+                    callwaarden.AddRange(monitoring(binary));
                     break;
                 default:
 
@@ -41,24 +41,53 @@ namespace VitoTestAPI.Helpers
         }
         public static List<string> monitoring(List<string> binary)
         {
-
+            string val = "";
             List<string> monitoringWaarden = new List<string>();
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
-                string val = Convert.ToString( bytetodec(binary[0] + binary[1]));
+                val = Convert.ToString(bytetodec(binary[0] + binary[1]));
                 monitoringWaarden.Add(val);
                 binary.RemoveAt(0);
                 binary.RemoveAt(0);
             }
-            monitoringWaarden.AddRange( coordextract(binary));
 
 
+            val = Convert.ToString(bytetodec(binary[0] + binary[1]) - 30);
+            monitoringWaarden.Add(val);
+            binary.RemoveAt(0);
+            binary.RemoveAt(0);
+            monitoringWaarden.AddRange(coordextract(binary));
             return monitoringWaarden;
         }
         public static List<string> coordextract(List<string> binary)
         {
             List<string> coordinaten = new List<string>();
-            
+
+            int val = bytetodec(binary[0] + binary[1]);
+            int latp = 0;
+            int longp = 0;
+            binary.RemoveAt(0);
+            binary.RemoveAt(0);
+
+            switch (val)
+            {
+                case 0:
+                    latp = 1;
+                    longp = 1;
+                    break;
+                case 1:
+                    latp = -1;
+                    longp = 1;
+                    break;
+                case 2:
+                    latp = 1;
+                    longp = -1;
+                    break;
+                case 3:
+                    latp = -1;
+                    longp = -1;
+                    break;
+            }
             string longe = "";
             string late = "";
             int pos = 1;
@@ -69,12 +98,8 @@ namespace VitoTestAPI.Helpers
                 binary.RemoveAt(0);
             }
             Console.WriteLine(longe);
-            if (longe.Substring(0) == "1")
-            {
-                pos = -1;
-                longe = longe.Remove(0);
-            }
-            longe = Convert.ToString((Convert.ToDouble(bytetodec(longe) * pos)) / 10000);
+
+            longe = Convert.ToString((Convert.ToDouble(bytetodec(longe) * longp)) / 100000);
             pos = 1;
 
             for (int n = 0; n < 6; n++)
@@ -83,12 +108,8 @@ namespace VitoTestAPI.Helpers
 
                 binary.RemoveAt(0);
             }
-            if (late.Substring(0) == "1")
-            {
-                pos = -1;
-                longe = longe.Remove(0);
-            }
-            late = Convert.ToString((Convert.ToDouble(bytetodec(late) * pos)) / 10000);
+
+            late = Convert.ToString((Convert.ToDouble(bytetodec(late) * latp)) / 100000);
             coordinaten.Add(longe);
             coordinaten.Add(late);
             coordinaten.Add(longe + ";" + late);
@@ -139,7 +160,48 @@ namespace VitoTestAPI.Helpers
             return binary;
         }
 
-        
+        public List<double> longconv(double lon, double lat)
+        {
+            List<double> vertex = new List<double>();
+            vertex.Add(lon);
+            vertex.Add(lat);
+            double smRadius = 6378136.98;
+            double smRange = smRadius * Math.PI * 2.0;
+            double smLonToX = smRange / 360.0;
+            double smRadiansOverDegrees = Math.PI / 180.0;
+
+            // compute x-map-unit
+            vertex[0] *= smLonToX;
+
+            double y = vertex[1];
+
+            // compute y-map-unit
+            if (y > 86.0)
+            {
+                vertex[1] = smRange;
+            }
+            else if (y < -86.0)
+            {
+                vertex[1] = -smRange;
+            }
+            else
+            {
+                y *= smRadiansOverDegrees;
+                y = Math.Log(Math.Tan(y) + (1.0 / Math.Cos(y)), Math.E);
+                vertex[1] = y * smRadius;
+            }
+
+            return vertex;
+        }
+        public List<double> bboxcalc(double lon, double lat)
+        {
+            List<double> calc = new List<double>();
+        https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
+
+            return calc;
+        }
+
+
     }
     
 }

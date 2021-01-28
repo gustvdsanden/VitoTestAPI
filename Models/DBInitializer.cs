@@ -15,7 +15,6 @@ namespace VitoTestAPI.Models
             {
                 return;
             }
-         
             context.UserTypes.AddRange(
                 new UserType { UserTypeName = "admin" },
                 new UserType { UserTypeName = "medewerker" },
@@ -23,15 +22,48 @@ namespace VitoTestAPI.Models
                 );
             context.SaveChanges();
             context.Users.AddRange(
-                new User { FirstName = "admin", LastName = "adminson",Password= BCrypt.Net.BCrypt.HashPassword("test"), Email="admin@test.be",Address="wijerken 41", PostalCode = "3920", City="Lommel",UserTypeID=1},
-                new User { FirstName = "medewerker", LastName = "vito", Password = BCrypt.Net.BCrypt.HashPassword("test"), Email = "user1@vito.be", Address = "wijerken 41", PostalCode = "3920", City = "Lommel", UserTypeID = 2 },
+                new User { FirstName = "admin", LastName = "admin",Password= BCrypt.Net.BCrypt.HashPassword("admin"), Email="admin@test.be",Address="Testlaan", PostalCode = "3920", City="Lommel",UserTypeID=1},
+                new User { FirstName = "Jurgen", LastName = "Everaerts", Password = BCrypt.Net.BCrypt.HashPassword("jurgen"), Email = "jurgen.Everaerts@vito.be", Address = "Hakkeltjesweg 65", PostalCode = "2400", City = "Mol", UserTypeID = 1 },
+                new User { FirstName = "Hans", LastName = "van Echelpoel", Password = BCrypt.Net.BCrypt.HashPassword("hans"), Email = "hans.echelpoel@vito.be", Address = "Schaaikesweg 81", PostalCode = "2400", City = "Mol", UserTypeID = 2 },
+                new User { FirstName = "Frans", LastName = "Bosmans", Password = BCrypt.Net.BCrypt.HashPassword("frans"), Email = "frans.b@vito.be", Address = "VanderWurmDreef 89", PostalCode = "2400", City = "Mol", UserTypeID = 2 },
+                new User { FirstName = "Eline", LastName = "vande Meyer", Password = BCrypt.Net.BCrypt.HashPassword("eline"), Email = "eline.m@vito.be", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 2 },
+                new User { FirstName = "Gerrit", LastName = "Schampers", Password = BCrypt.Net.BCrypt.HashPassword("gerrit"), Email = "Gerrit.S@vito.be", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 2 },
+                new User { FirstName = "Aniek", LastName = "Meyendonck", Password = BCrypt.Net.BCrypt.HashPassword("aniek"), Email = "Aniek.M@vito.be", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 2 },
+                new User { FirstName = "Joost", LastName = "Plugge", Password = BCrypt.Net.BCrypt.HashPassword("joost"), Email = "Joost.P@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
+                new User { FirstName = "Edgidio", LastName = "Valentino", Password = BCrypt.Net.BCrypt.HashPassword("edgidio"), Email = "Edgidio.V@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
+                new User { FirstName = "Tijs", LastName = "Bakermans", Password = BCrypt.Net.BCrypt.HashPassword("tijs"), Email = "Tijs.B@gnail.be", Address = "Koning Albertlaan 11", PostalCode = "3920", City = "Lommel", UserTypeID = 3 },
+                new User { FirstName = "Elodie", LastName = "Oedrogo", Password = BCrypt.Net.BCrypt.HashPassword("elodie"), Email = "eline.m@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
+                new User { FirstName = "Jonas", LastName = "Faasen", Password = BCrypt.Net.BCrypt.HashPassword("jonas"), Email = "Jonas.F@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
+                new User { FirstName = "Fabienne", LastName = "Poos", Password = BCrypt.Net.BCrypt.HashPassword("fabienne"), Email = "Fabienne.P@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
+                new User { FirstName = "Nikita", LastName = "Vondels", Password = BCrypt.Net.BCrypt.HashPassword("nikita"), Email = "Nikita.V@gmail.com", Address = "Linkerarmstraat 11", PostalCode = "2400", City = "Mol", UserTypeID = 3 },
                 new User { FirstName = "Gust", LastName = "van der Sanden", Password = BCrypt.Net.BCrypt.HashPassword("gust"), Email = "gustvdsanden@gmail.com", Address = "wijerken 41", PostalCode = "3920", City = "Lommel", UserTypeID = 3 }
                 );
             context.SaveChanges();
             context.Boxes.AddRange(
-                new Box { MacAddress = "123ABC", Name = "SensorBox 1b",Comment="De box van team 1", Active = true},
-                new Box { MacAddress = "123ABC", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
-                new Box { MacAddress = "123ABC", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
+                new Box { MacAddress = "1D882D", Name = "B4 Prototype Box",Comment="De box van team B4", Active = true},
+                new Box { MacAddress = "00:0a:95:9d:68:16", Name = "4G Test box", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "box3", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = false },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = false },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABCD", Name = "SensorBox 2b", Comment = "De box van team 2", Active = true },
+                new Box { MacAddress = "123ABCDE", Name = "SensorBox 3b", Comment = "De box van team 3", Active = true }
+                );
+            context.SaveChanges();
+            context.BoxUsers.AddRange(
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 },
+                new BoxUser { StartDate = DateTime.Now, BoxID = 1, UserID = 12 }
                 );
             context.SaveChanges();
             context.SensorTypes.AddRange(

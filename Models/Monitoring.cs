@@ -11,7 +11,8 @@ namespace VitoTestAPI.Models
         public DateTime DateTime { get; set; }
         public string SdCapacity { get; set; }
         public string BatteryPercentage { get; set; }
-        public bool BatteryStatus { get; set; }
+        public string AmountSatellite { get; set; }
+        public string Temperature { get; set; }
         //Relations
         public int BoxID { get; set; }
         public Box Box { get; set; }
