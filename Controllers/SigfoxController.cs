@@ -129,15 +129,15 @@ namespace VitoTestAPI.Controllers
                 monitoring.Temperature = sigfoxData[3];
                 //GPS
                 Measurement measurement = new Measurement();
-                if (await _context.SensorBoxes.FindAsync(box.BoxID, 18) == null)
+                if (await _context.SensorBoxes.FindAsync(box.BoxID, 17) == null)
                 {
                     SensorBox sensorbox = new SensorBox();
                     sensorbox.BoxID = box.BoxID;
-                    sensorbox.SensorID = 18;
+                    sensorbox.SensorID = 17;
                     _context.SensorBoxes.Add(sensorbox);
                 }
                 measurement.BoxID = box.BoxID;
-                measurement.SensorID = 18;
+                measurement.SensorID = 17;
                 measurement.Value = sigfoxData[6];
                 measurement.TimeStamp = DateTime.Now;
                 _context.Measurements.Add(measurement);
