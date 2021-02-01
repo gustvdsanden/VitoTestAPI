@@ -8,7 +8,7 @@ namespace VitoTestAPI.Models
     public class Monitoring
     {
         public int MonitoringID { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime TimeStamp { get; set; }
         public string SdCapacity { get; set; }
         public string BatteryPercentage { get; set; }
         public string AmountSatellite { get; set; }

@@ -86,11 +86,12 @@ namespace VitoTestAPI.Controllers
             }
             else if (sigfoxData[0] == "3")
             {
-                
                 //snapshot
                 sigfoxData.Remove("3");
                 //batterij
                 Monitoring monitoring = new Monitoring();
+                monitoring.TimeStamp = DateTime.Now;
+                monitoring.BoxID = box.BoxID;
                 if (int.Parse(sigfoxData[0]) >= 0 || int.Parse(sigfoxData[0]) <= 100){
                     monitoring.BatteryPercentage = sigfoxData[0];
                 }
@@ -135,6 +136,7 @@ namespace VitoTestAPI.Controllers
                     sensorbox.BoxID = box.BoxID;
                     sensorbox.SensorID = 17;
                     _context.SensorBoxes.Add(sensorbox);
+                    await _context.SaveChangesAsync();
                 }
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
