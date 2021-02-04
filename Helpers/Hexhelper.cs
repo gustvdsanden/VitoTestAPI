@@ -39,6 +39,9 @@ namespace VitoTestAPI.Helpers
                     
                       callwaarden.AddRange(monitoring(binary));
                     break;
+                case 4:
+                    callwaarden.AddRange(Bytointmeting(binary));
+                    break;
                 default:
 
                     break;
