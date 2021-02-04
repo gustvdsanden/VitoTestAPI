@@ -72,6 +72,10 @@ namespace VitoTestAPI.Controllers
                 {
                     if(sensor != "0")
                     {
+                        if(sensor == "20")
+                        {
+                            sigfoxData[0] = (int.Parse(sigfoxData[0]) - 30).ToString();
+                        }
                         Measurement measurement = new Measurement();
                         measurement.SensorID = int.Parse(sensor);
                         measurement.BoxID = box.BoxID;
