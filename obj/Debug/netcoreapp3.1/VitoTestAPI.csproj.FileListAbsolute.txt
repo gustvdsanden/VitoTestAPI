@@ -109,3 +109,4 @@ E:\school\2020-2021\project4.0\VitoTestAPI\VitoTestAPI\bin\Debug\netcoreapp3.1\r
 E:\school\2020-2021\project4.0\VitoTestAPI\VitoTestAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 E:\school\2020-2021\project4.0\VitoTestAPI\VitoTestAPI\bin\Debug\netcoreapp3.1\Npgsql.dll
 E:\school\2020-2021\project4.0\VitoTestAPI\VitoTestAPI\bin\Debug\netcoreapp3.1\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\school\2020-2021\project4.0\VitoTestAPI\VitoTestAPI\bin\Debug\netcoreapp3.1\GeoJSON.dll

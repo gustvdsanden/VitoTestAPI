@@ -48,6 +48,7 @@ namespace VitoTestAPI.Controllers
         public async Task<ActionResult<UserType>> PostUserType(UserType userType)
         {
             _context.UserTypes.Add(userType);
+          
             await _context.SaveChangesAsync();
 
             return Ok(userType);

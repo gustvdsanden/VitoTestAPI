@@ -30,7 +30,9 @@ namespace VitoTestAPI.Controllers
         [HttpPost("PostData/{callback}/{device}")]
         public async Task<string> PostSigfoxData(string callback,string device)
         {
-
+            //DateTime date1 = DateTime.UtcNow;
+            //TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            //DateTime date2 = TimeZoneInfo.ConvertTime(date1, timeZoneInfo);
             Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == device);
             if (box==null)
             {
@@ -88,10 +90,11 @@ namespace VitoTestAPI.Controllers
             {
                 //snapshot
                 sigfoxData.Remove("3");
-                //batterij
+               
                 Monitoring monitoring = new Monitoring();
                 monitoring.TimeStamp = DateTime.Now;
                 monitoring.BoxID = box.BoxID;
+                //batterij
                 if (int.Parse(sigfoxData[0]) >= 0 || int.Parse(sigfoxData[0]) <= 100){
                     monitoring.BatteryPercentage = sigfoxData[0];
                 }
@@ -140,8 +143,9 @@ namespace VitoTestAPI.Controllers
                 }
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
-                measurement.Value = sigfoxData[6];
                 measurement.TimeStamp = DateTime.Now;
+
+                measurement.Value = sigfoxData[6];
                 _context.Measurements.Add(measurement);
                 _context.Monitorings.Add(monitoring);
                 await _context.SaveChangesAsync();

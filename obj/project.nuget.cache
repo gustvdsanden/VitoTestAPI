@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Vr6Cuwi+ifzeBXV5LWD/vPI/0AXMMYN7xN9ZHzOhFHAV4vDzaHZkV3y8K3/cGym1U4AjdwT2b740t+XPHrP6vQ==",
+  "dgSpecHash": "LSVemYJ9U+a02bOv0dsEg/aGTVE3482Jqft7u/LXaI7co6V9eSkE1Ku1DGqnbH+2bcgTZj86HIqfee0STWKKGw==",
   "success": true,
   "projectFilePath": "E:\\school\\2020-2021\\project4.0\\VitoTestAPI\\VitoTestAPI\\VitoTestAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gustv\\.nuget\\packages\\bcrypt.net-next\\3.1.0\\bcrypt.net-next.3.1.0.nupkg.sha512",
     "C:\\Users\\gustv\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
+    "C:\\Users\\gustv\\.nuget\\packages\\geojson\\2.1.1\\geojson.2.1.1.nupkg.sha512",
     "C:\\Users\\gustv\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\gustv\\.nuget\\packages\\microsoft.aspnetcore.antiforgery\\2.2.0\\microsoft.aspnetcore.antiforgery.2.2.0.nupkg.sha512",
     "C:\\Users\\gustv\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

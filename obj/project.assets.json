@@ -33,6 +33,18 @@
           "buildTransitive/netcoreapp3.0/EntityFramework.targets": {}
         }
       },
+      "GeoJSON/2.1.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/GeoJSON.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GeoJSON.dll": {}
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -3373,6 +3385,20 @@
         "tools/netcoreapp3.0/any/ef6.dll",
         "tools/netcoreapp3.0/any/ef6.pdb",
         "tools/netcoreapp3.0/any/ef6.runtimeconfig.json"
+      ]
+    },
+    "GeoJSON/2.1.1": {
+      "sha512": "24v6rN/MObBwQMIPZ6HnjBs5JvVHwqhS37k0b7rrgygkc9emIrVIrX5/oA91n9mhATnYDMQNDiM553lgLqikDg==",
+      "type": "package",
+      "path": "geojson/2.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "geojson.2.1.1.nupkg.sha512",
+        "geojson.nuspec",
+        "lib/net45/GeoJSON.dll",
+        "lib/netstandard1.6/GeoJSON.dll",
+        "lib/netstandard2.0/GeoJSON.dll"
       ]
     },
     "Humanizer.Core/2.8.26": {
@@ -9992,6 +10018,7 @@
     ".NETCoreApp,Version=v3.1": [
       "BCrypt.Net-Next >= 3.1.0",
       "EntityFramework >= 6.4.4",
+      "GeoJSON >= 2.1.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 3.1.0",
       "Microsoft.AspNetCore.Mvc >= 2.2.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 3.1.5",
@@ -10052,6 +10079,10 @@
           "EntityFramework": {
             "target": "Package",
             "version": "[6.4.4, )"
+          },
+          "GeoJSON": {
+            "target": "Package",
+            "version": "[2.1.1, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",

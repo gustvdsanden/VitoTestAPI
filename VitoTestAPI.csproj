@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="3.1.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="GeoJSON" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />

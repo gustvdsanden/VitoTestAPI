@@ -37,7 +37,7 @@ namespace VitoTestAPI.Controllers
             return Ok(user);
         }
         //GET: api/User
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
