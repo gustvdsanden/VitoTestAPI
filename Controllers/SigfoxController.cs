@@ -186,11 +186,12 @@ namespace VitoTestAPI.Controllers
         }
         // api/Terrascope/DB/{boxid}
         [HttpPost("DB/{boxid}")]
-        public async Task<string> getDateFromDB(int boxid)
+        public async Task<string[]> getDateFromDB(int boxid)
         {
 
             Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastOrDefaultAsync();
             string date = "";
+            string[] fullCoords = new string[3];
             if (measurement != null && measurement.Value.Length > 0)
             {
                 string[] coords = measurement.Value.Split(";");
@@ -201,7 +202,7 @@ namespace VitoTestAPI.Controllers
                 else
                 {
                     date = await getGoodWeatherDate(boxid);
-                    string[] fullCoords = new string[3];
+                    
                     fullCoords[0] = coords[0];
                     fullCoords[1] = coords[1];
                     fullCoords[2] = date;
@@ -215,7 +216,7 @@ namespace VitoTestAPI.Controllers
                 date = "No Location Data available";
             }
 
-            return date;
+            return fullCoords;
         }
     }
 }
