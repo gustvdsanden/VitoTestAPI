@@ -195,9 +195,12 @@ namespace VitoTestAPI.Controllers
             if (measurement != null && measurement.Value.Length > 0)
             {
                 string[] coords = measurement.Value.Split(";");
+                fullCoords[0] = coords[0];
+                fullCoords[1] = coords[1];
                 if (coords.Length == 3)
                 {
                     date = coords[2];
+                    fullCoords[2] = date;
                 }
                 else
                 {
