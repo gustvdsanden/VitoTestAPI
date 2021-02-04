@@ -48,7 +48,7 @@ namespace VitoTestAPI.Controllers
             return result[1];
         }
         // api/Terrascope/{boxid}
-        [HttpPost("{boxid}")]
+        [HttpGet("{boxid}")]
         public async Task<string> getDateFromDB(int boxid)
         {
             Box box = await _context.Boxes.FirstOrDefaultAsync(b => b.BoxID == boxid);
