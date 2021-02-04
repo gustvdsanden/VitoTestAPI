@@ -48,7 +48,7 @@ namespace VitoTestAPI.Controllers
             return result[1];
         }
         // api/Terrascope/{boxid}
-        [HttpGet("{boxid}")]
+        [HttpPost("{boxid}")]
         public async Task<string> getDateFromDB(int boxid)
         {
             Box box = await _context.Boxes.FirstOrDefaultAsync(b => b.BoxID == boxid);
@@ -57,15 +57,18 @@ namespace VitoTestAPI.Controllers
             if(measurement != null && measurement.Value.Length>0)
             {
                 string[] coords = measurement.Value.Split(";");
-                if (coords[2].Length > 0)
+                if (coords.Length==3)
                 {
                     date = coords[2];
                 }
                 else
                 {
                     date = await getGoodWeatherDate(box.BoxID);
-                    coords[2] = ";" + date;
-                    measurement.Value = string.Join(";", coords);
+                    string[] fullCoords = new string[3];
+                    fullCoords[0] = coords[0];
+                    fullCoords[1] = coords[1];
+                    fullCoords[2] = date;
+                    measurement.Value = string.Join(";", fullCoords);
                     _context.Entry(measurement).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
