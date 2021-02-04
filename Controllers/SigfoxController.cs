@@ -143,9 +143,9 @@ namespace VitoTestAPI.Controllers
                 }
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
-                measurement.TimeStamp = DateTime.Now;
-
-                measurement.Value = sigfoxData[6];
+                measurement.TimeStamp = DateTime.Now;  
+                string datum = await TerrascopeController.getGoodWeatherDate(box.BoxID);
+                measurement.Value = sigfoxData[4]+";"+sigfoxData[5]+";"+ datum;
                 _context.Measurements.Add(measurement);
                 _context.Monitorings.Add(monitoring);
                 await _context.SaveChangesAsync();

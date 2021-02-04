@@ -37,7 +37,7 @@ namespace VitoTestAPI.Controllers
             return Ok(user);
         }
         //GET: api/User
-        [Authorize]
+     
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -74,8 +74,10 @@ namespace VitoTestAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-
-
+            if (_context.Users.Any(u => u.Email == user.Email))
+            {
+                return BadRequest();
+            }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             _context.Users.Add(user);
@@ -89,11 +91,11 @@ namespace VitoTestAPI.Controllers
   
         public async Task<ActionResult<User>> PutUser(int id, User user)
         {
-            if (id != user.UserID)
+            if (id != user.UserID || _context.Users.Any(u => u.Email == user.Email))
             {
                 return BadRequest();
             }
-
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             _context.Entry(user).State = EntityState.Modified;
 
             try
