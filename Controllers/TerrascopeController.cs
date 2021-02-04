@@ -27,19 +27,17 @@ namespace VitoTestAPI.Controllers
         [HttpPost("{boxid}/{scale}")]
         public async Task<string> getGoodWeatherURL(int boxid,int scale)
         {
-            Box box = await _context.Boxes.FirstOrDefaultAsync(b=>b.BoxID  == boxid);
-            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID==box.BoxID).OrderBy(b =>b.TimeStamp).LastAsync();
+            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID== boxid).OrderBy(b =>b.TimeStamp).LastAsync();
             string[] coords = measurement.Value.Split(";");
             double lon = double.Parse(coords[0]);
             double lat = double.Parse(coords[1]);
             List<string> result = await Helpers.Hexhelper.bboxcalc(lon, lat, (double)scale);
             return result[0];
         }
-        
-        public static async Task<string> getGoodWeatherDate(int boxid)
+        [HttpGet("test/{boxid}")]
+        public async Task<string> getGoodWeatherDate(int boxid)
         {
-            Box box = await _context.Boxes.FirstOrDefaultAsync(b => b.BoxID == boxid);
-            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == box.BoxID).OrderBy(b => b.TimeStamp).LastAsync();
+            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastAsync();
             string[] coords = measurement.Value.Split(";");
             double scale = 2000;
             double lon = double.Parse(coords[0]);
@@ -51,8 +49,8 @@ namespace VitoTestAPI.Controllers
         [HttpPost("{boxid}")]
         public async Task<string> getDateFromDB(int boxid)
         {
-            Box box = await _context.Boxes.FirstOrDefaultAsync(b => b.BoxID == boxid);
-            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == box.BoxID).OrderBy(b => b.TimeStamp).LastOrDefaultAsync();
+            
+            Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastOrDefaultAsync();
             string date = "";
             if(measurement != null && measurement.Value.Length>0)
             {
@@ -63,7 +61,7 @@ namespace VitoTestAPI.Controllers
                 }
                 else
                 {
-                    date = await getGoodWeatherDate(box.BoxID);
+                    date = await getGoodWeatherDate(boxid);
                     string[] fullCoords = new string[3];
                     fullCoords[0] = coords[0];
                     fullCoords[1] = coords[1];

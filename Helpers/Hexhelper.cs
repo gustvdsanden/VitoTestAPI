@@ -212,7 +212,7 @@ namespace VitoTestAPI.Helpers
             string uri = "";
             int R = 6371007;
             string eindatum = DateTime.Now.Date.ToString("yyyy-MM-dd");
-            string begindatum = DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd");
+            string begindatum = DateTime.Now.Date.AddDays(-30).ToString("yyyy-MM-dd");
             string url = "";
             double dn = afmeeting*4;
             double de =  afmeeting*4;
@@ -249,6 +249,7 @@ namespace VitoTestAPI.Helpers
             var responseString = await postResponse.Content.ReadAsStringAsync();
             dynamic responseBody = JsonConvert.DeserializeObject(responseString);
             dynamic s2Data = responseBody["clean"]["s2-data"];
+            Console.WriteLine(s2Data);
             foreach (dynamic valuePerJsonDate in responseBody["clean"]["s2-data"])
             {
                 string date = valuePerJsonDate.Name;
