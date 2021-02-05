@@ -34,9 +34,9 @@ namespace VitoTestAPI.Controllers
         [HttpPost("PostData/{callback}/{device}")]
         public async Task<string> PostSigfoxData(string callback, string device)
         {
-            //DateTime date1 = DateTime.UtcNow;
-            //TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-            //DateTime date2 = TimeZoneInfo.ConvertTime(date1, timeZoneInfo);
+            DateTime dateUtc = DateTime.UtcNow;
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            DateTime dateNow = TimeZoneInfo.ConvertTime(dateUtc, timeZoneInfo);
             Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == device);
             if (box == null)
             {
@@ -83,7 +83,7 @@ namespace VitoTestAPI.Controllers
                         Measurement measurement = new Measurement();
                         measurement.SensorID = int.Parse(sensor);
                         measurement.BoxID = box.BoxID;
-                        measurement.TimeStamp = DateTime.Now;
+                        measurement.TimeStamp = dateNow;
                         measurement.Value = sigfoxData[0];
                         sigfoxData.Remove(sigfoxData[0]);
                         _context.Measurements.Add(measurement);
@@ -100,7 +100,7 @@ namespace VitoTestAPI.Controllers
                 sigfoxData.Remove("3");
 
                 Monitoring monitoring = new Monitoring();
-                monitoring.TimeStamp = DateTime.Now;
+                monitoring.TimeStamp = dateNow;
                 monitoring.BoxID = box.BoxID;
                 //batterij
                 if (int.Parse(sigfoxData[0]) >= 0 || int.Parse(sigfoxData[0]) <= 100) {
@@ -151,7 +151,7 @@ namespace VitoTestAPI.Controllers
                 }
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
-                measurement.TimeStamp = DateTime.Now;
+                measurement.TimeStamp = dateNow;
                 string datum = await getGoodWeatherDate(box.BoxID);
                 measurement.Value = sigfoxData[4] + ";" + sigfoxData[5] + ";" + datum;
                 _context.Measurements.Add(measurement);
