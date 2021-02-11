@@ -94,6 +94,24 @@ namespace VitoTestAPI.Helpers
                         return "Loose wire";
                     }
                     return value;
+                case "B4 - PMS5003 particle concentration sensor PM10":
+                    switch (intValue)
+                    {
+                        case 254:
+                            return "Could not read data";
+                        case 255:
+                            return "Could not find Sensor";
+                    }
+                    return ((intValue^2)/10).ToString();
+                case "B4 - PMS5003 particle concentration sensor PM2.5":
+                    switch (intValue)
+                    {
+                        case 254:
+                            return "Could not read data";
+                        case 255:
+                            return "Could not find Sensor";
+                    }
+                    return (intValue *10).ToString();
             }
 
 
