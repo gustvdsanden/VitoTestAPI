@@ -93,6 +93,7 @@ namespace VitoTestAPI.Controllers
                 sigfoxData.Remove(sigfoxData[0]);
                 foreach (string sensor in sensors)
                 {
+            
                     string value = Helpers.ErrorHelper.CheckForErrors(_context, sensor, sigfoxData[0]);
                     Measurement measurement = new Measurement();
                     measurement.SensorID = int.Parse(sensor);

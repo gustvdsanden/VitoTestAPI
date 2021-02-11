@@ -21,7 +21,7 @@ namespace VitoTestAPI.Helpers
             {
                 return "Sensor with id: " + (int.Parse(sensorid) - 255) + " was not present in DB. Add it and make a new Config call";
             }
-            Sensor sensor = context.Sensors.Find(sensorid);
+            Sensor sensor = context.Sensors.Find(int.Parse(sensorid));
             int intValue = int.Parse(value);
             string sensorName = sensor.Name;
             switch (sensorName)
