@@ -42,6 +42,10 @@ namespace VitoTestAPI.Helpers
                 case 4:
                     callwaarden.AddRange(Bytointmeting(binary));
                     break;
+                case 5:
+
+                    callwaarden.AddRange(monitoring(binary));
+                    break;
                 default:
 
                     break;
@@ -243,6 +247,7 @@ namespace VitoTestAPI.Helpers
             calc.Add(dlong);
             calc.AddRange(longconv(Llong, Llat));
             calc.AddRange(longconv(dlong, dlat));
+            //cropsar call
             uri = "https://cropsar.vito.be/api/v1.0/cropsar-analysis/?product=S2_FAPAR&start="+ begindatum +"&end="+eindatum+"&crs=epsg:4326&source=probav-mep";
             var httpcontent = new StringContent(Json, Encoding.UTF8, "application/json");
             var postResponse = await client.PostAsync(uri, httpcontent);
@@ -260,6 +265,7 @@ namespace VitoTestAPI.Helpers
                     highDate = date;
                 }
             }
+            //get url
             string url2 = "https://services.terrascope.be/wms/v2?service=WMS&version=1.3.0&request=GetMap&layers=CGS_S2_FAPAR&format=image/png&time=" + highDate + "&width=" + dn/4 + "&height=" + de/4 + "&bbox=" + calc[4].ToString().Replace(",", ".") + "," + calc[5].ToString().Replace(",", ".") + "," + calc[6].ToString().Replace(",", ".") + "," + calc[7].ToString().Replace(",", ".") + "&styles=&srs=EPSG:3857";
             List<string> returnList = new List<string>();
             returnList.Add(url2);

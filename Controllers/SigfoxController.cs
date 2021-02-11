@@ -32,79 +32,99 @@ namespace VitoTestAPI.Controllers
 
         //POST: api/Sigfox/PostData/{callback}/{device}
         [HttpPost("PostData/{callback}/{device}")]
-        public async Task<string> PostSigfoxData(string callback, string device)
+        public async Task<List<string>> PostSigfoxData(string callback, string device)
         {
+            List<string> returnList = new List<string>();
             DateTime dateUtc = DateTime.UtcNow;
             TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             DateTime dateNow = TimeZoneInfo.ConvertTime(dateUtc, timeZoneInfo);
             Box box = _context.Boxes.FirstOrDefault(b => b.MacAddress == device);
             if (box == null)
             {
-                return "Box not found";
+                returnList.Add("Box not found");
+                return returnList;
             }
             List<string> sigfoxData = Helpers.Hexhelper.HexConv(callback);
+            //configuratie
             if (sigfoxData[0] == "1")
             {
                 sigfoxData.Remove("1");
                 sigfoxData.RemoveAll(p => p == "0");
-                List<string> dummyData = sigfoxData;
-                foreach (string sensor in dummyData)
+                List<string> dummyData = new List<string>();
+                foreach (string sensor in sigfoxData)
                 {
-                    if (await _context.SensorBoxes.FindAsync(box.BoxID, int.Parse(sensor)) == null)
+                    if (await _context.Sensors.FindAsync(int.Parse(sensor)) != null)
                     {
-                        SensorBox sensorbox = new SensorBox();
-                        sensorbox.BoxID = box.BoxID;
-                        sensorbox.SensorID = int.Parse(sensor);
-                        _context.SensorBoxes.Add(sensorbox);
+                        if (await _context.SensorBoxes.FindAsync(box.BoxID, int.Parse(sensor)) == null)
+                        {
+                            SensorBox sensorbox = new SensorBox();
+                            sensorbox.BoxID = box.BoxID;
+                            sensorbox.SensorID = int.Parse(sensor);
+                            _context.SensorBoxes.Add(sensorbox);
+                        }
+                        returnList.Add("Sensor with id: " + sensor + " was added to box: "+box.BoxID);
+                        dummyData.Add(sensor);
                     }
+                    else
+                    {
+                        returnList.Add("Sensor with id: "+sensor+" does not exist in the Database and could not be added");
+                        //if sensor does not exist in db add sensorid+255 to configurationcall
+                        dummyData.Add((int.Parse(sensor) +255).ToString());
+                    }
+                    
                 }
 
-                box.ConfiguratieString = string.Join(",", sigfoxData);
+                box.ConfiguratieString = string.Join(",", dummyData);
                 await _context.SaveChangesAsync();
-                return "Configuratie aanvaard";
+                returnList.Add(box.ConfiguratieString);
+                returnList.Add("Configuratie aanvaard");
+                return returnList;
             } else if ((sigfoxData[0] == "2") || (sigfoxData[0] == "4"))
             {
+                //meting call
                 string configuratieString = box.ConfiguratieString;
                 string[] sensors = configuratieString.Split(',');
                 if (sigfoxData[0] == "4")
                 {
-                    box.Comment = "Geen Gps beschikbaar";
+                    
+                    
                     _context.Entry(box).State = EntityState.Modified;
                 }
                 sigfoxData.Remove(sigfoxData[0]);
                 foreach (string sensor in sensors)
                 {
-                    if (sensor != "0")
-                    {
-                        if (sensor == "20")
-                        {
-                            sigfoxData[0] = (int.Parse(sigfoxData[0]) - 30).ToString();
-                        }
-                        Measurement measurement = new Measurement();
-                        measurement.SensorID = int.Parse(sensor);
-                        measurement.BoxID = box.BoxID;
-                        measurement.TimeStamp = dateNow;
-                        measurement.Value = sigfoxData[0];
-                        sigfoxData.Remove(sigfoxData[0]);
-                        _context.Measurements.Add(measurement);
-
-                    }
+                    string value = Helpers.ErrorHelper.CheckForErrors(_context, sensor, sigfoxData[0]);
+                    Measurement measurement = new Measurement();
+                    measurement.SensorID = int.Parse(sensor);
+                    measurement.BoxID = box.BoxID;
+                    measurement.TimeStamp = dateNow;
+                    measurement.Value = value;
+                    sigfoxData.Remove(sigfoxData[0]);
+                    _context.Measurements.Add(measurement);
+                    returnList.Add("Sensor "+sensor+" with measurement "+value);
                 }
                 await _context.SaveChangesAsync();
                 //meting
-                return "Meting opgeslagen";
+                return returnList;
+
             }
-            else if (sigfoxData[0] == "3")
+            else if (sigfoxData[0] == "3"|| sigfoxData[0] == "5")
             {
                 //snapshot
-                sigfoxData.Remove("3");
+                sigfoxData.Remove(sigfoxData[0]);
 
                 Monitoring monitoring = new Monitoring();
                 monitoring.TimeStamp = dateNow;
                 monitoring.BoxID = box.BoxID;
+                returnList.Add("Timestamp: " + monitoring.TimeStamp);
+                returnList.Add("BoxID: " + monitoring.BoxID);
                 //batterij
-                if (int.Parse(sigfoxData[0]) >= 0 || int.Parse(sigfoxData[0]) <= 100) {
+                if (int.Parse(sigfoxData[0]) >= 0 && int.Parse(sigfoxData[0]) <= 100) {
                     monitoring.BatteryPercentage = sigfoxData[0];
+                }
+                else if (int.Parse(sigfoxData[0]) >100 && int.Parse(sigfoxData[0])<= 200)
+                {
+                    monitoring.BatteryPercentage = "Charging rate: "+ (int.Parse(sigfoxData[0])-100)+"%";
                 }
                 else if (sigfoxData[0] == "253")
                 {
@@ -118,10 +138,15 @@ namespace VitoTestAPI.Controllers
                 {
                     monitoring.BatteryPercentage = "Undervolted";
                 }
+                else
+                {
+                    monitoring.BatteryPercentage = "Unknown Error";
+                }
+                returnList.Add("Battery: "+monitoring.BatteryPercentage);
                 //SD card
                 if (int.Parse(sigfoxData[1]) >= 0 || int.Parse(sigfoxData[1]) <= 100)
                 {
-                    monitoring.SdCapacity = sigfoxData[1];
+                    monitoring.SdCapacity = (100-double.Parse(sigfoxData[1])).ToString();
                 }
                 else if (sigfoxData[1] == "253")
                 {
@@ -135,10 +160,17 @@ namespace VitoTestAPI.Controllers
                 {
                     monitoring.BatteryPercentage = "No Read";
                 }
+                else
+                {
+                    monitoring.BatteryPercentage = "Value not in range (0-100)";
+                }
+                returnList.Add("SD Card: " + monitoring.SdCapacity);
                 //satellite
                 monitoring.AmountSatellite = sigfoxData[2];
+                returnList.Add("Satellites: " + monitoring.AmountSatellite);
                 //temperatuur
                 monitoring.Temperature = sigfoxData[3];
+                returnList.Add("Temperature: " + monitoring.Temperature);
                 //GPS
                 Measurement measurement = new Measurement();
                 if (await _context.SensorBoxes.FindAsync(box.BoxID, 17) == null)
@@ -149,18 +181,43 @@ namespace VitoTestAPI.Controllers
                     _context.SensorBoxes.Add(sensorbox);
                     await _context.SaveChangesAsync();
                 }
+                if (box.Comment != "")
+                {
+                    if (box.Comment.Contains("LastKnownLocation"))
+                    {
+                        int startIndex = box.Comment.IndexOf("LastKnownLocation=");
+                        int endIndex = box.Comment.IndexOf(",", startIndex);
+                        box.Comment = box.Comment.Substring(0, startIndex + 17) + sigfoxData[6] + box.Comment.Substring(endIndex, box.Comment.Length - endIndex);
+                    }
+                    else
+                    {
+                        box.Comment += "LastKnownLocation=" + sigfoxData[6] + ",";
+                    }
+                    
+                }
+                else
+                {
+                    box.Comment = "LastKnownLocation="+sigfoxData[6]+",";
+                }
+                _context.Entry(box).State = EntityState.Modified;
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
                 measurement.TimeStamp = dateNow;
-                string datum = await getGoodWeatherDate(box.BoxID);
+                //string datum = await getGoodWeatherDate(box.BoxID);
+                string datum = "2020-11-03";
                 measurement.Value = sigfoxData[4] + ";" + sigfoxData[5] + ";" + datum;
+                returnList.Add("GPS: " + measurement.Value);
                 _context.Measurements.Add(measurement);
                 _context.Monitorings.Add(monitoring);
                 await _context.SaveChangesAsync();
-                return string.Join(',', sigfoxData);
+                
+                returnList.Add(string.Join(',', sigfoxData));
+                return returnList;
             }
-            return "Identifier not caught";
+            returnList.Add("Identifier not caught");
+            return returnList;
         }
+        //Get good url
         // api/Sigfox/{boxid}/{scale}
         [HttpPost("{boxid}/{scale}")]
         public async Task<string> getGoodWeatherURL(int boxid, int scale)
@@ -172,6 +229,7 @@ namespace VitoTestAPI.Controllers
             List<string> result = await Helpers.Hexhelper.bboxcalc(lon, lat, (double)scale);
             return result[0];
         }
+        //Get good date
         // api/Terrascope/{boxid}
         [HttpPost("{boxid}")]
         public async Task<string> getGoodWeatherDate(int boxid)
@@ -184,6 +242,7 @@ namespace VitoTestAPI.Controllers
             List<string> result = await Helpers.Hexhelper.bboxcalc(lon, lat, (double)scale);
             return result[1];
         }
+        //get good date (first check db)
         // api/Terrascope/DB/{boxid}
         [HttpPost("DB/{boxid}")]
         public async Task<string[]> getDateFromDB(int boxid)

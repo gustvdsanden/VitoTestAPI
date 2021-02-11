@@ -33,8 +33,7 @@ namespace VitoTestAPI
             //services.AddDbContext<AppContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c => { c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() { Name = "Authorization", Type = SecuritySchemeType.ApiKey, Scheme = "Bearer", BearerFormat = "JWT", In = ParameterLocation.Header, Description = "JWT Authorizationheader usingtheBearerscheme. \r\n\r\n Enter 'Bearer' [space] andthenyourtoken in the textinput below.\r\n\r\nExample: \"Bearer12345abcdef\"", }); c.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } } }); });
 
-            services.AddDbContext<ApiContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("ApiContext")));
+            services.AddDbContext<ApiContext>(options =>options.UseNpgsql(Configuration.GetConnectionString("ApiContext")));
             //services.AddDbContext<ApiContext>(opt => opt.UseSqlServer( Configuration.GetConnectionString("DefaultConnection")));
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
