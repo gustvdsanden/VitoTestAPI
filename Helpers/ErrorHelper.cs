@@ -97,19 +97,31 @@ namespace VitoTestAPI.Helpers
                 case "B4 - PMS5003 particle concentration sensor PM10":
                     switch (intValue)
                     {
+                        case 253:
+                            return "Measurement not within reach";
                         case 254:
                             return "Could not read data";
                         case 255:
                             return "Could not find Sensor";
                     }
+                    if(intValue<=100 && intValue >= 0)
+                    {
+                      return value;
+                    }
                     return (((intValue-100)*6)+100).ToString();
                 case "B4 - PMS5003 particle concentration sensor PM2.5":
                     switch (intValue)
                     {
+                        case 253:
+                            return "Measurement not within reach";
                         case 254:
                             return "Could not read data";
                         case 255:
                             return "Could not find Sensor";
+                    }
+                    if (intValue <= 100 && intValue >= 0)
+                    {
+                        return value;
                     }
                     return (((intValue - 100) * 4) + 100).ToString();
             }
