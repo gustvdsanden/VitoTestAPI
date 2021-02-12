@@ -186,9 +186,9 @@ namespace VitoTestAPI.Controllers
                 {
                     if (box.Comment.Contains("LastKnownLocation"))
                     {
-                        int startIndex = box.Comment.IndexOf("LastKnownLocation=");
+                        int startIndex = box.Comment.IndexOf("LastKnownLocation");
                         int endIndex = box.Comment.IndexOf(",", startIndex);
-                        box.Comment = box.Comment.Substring(0, startIndex + 17) + sigfoxData[6] + box.Comment.Substring(endIndex, box.Comment.Length - endIndex);
+                        box.Comment = box.Comment.Substring(0, startIndex + 18) + sigfoxData[6] + box.Comment.Substring(endIndex, box.Comment.Length - endIndex);
                     }
                     else
                     {
