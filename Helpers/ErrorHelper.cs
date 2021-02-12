@@ -102,7 +102,7 @@ namespace VitoTestAPI.Helpers
                         case 255:
                             return "Could not find Sensor";
                     }
-                    return ((intValue^2)/10).ToString();
+                    return (((intValue-100)*6)+100).ToString();
                 case "B4 - PMS5003 particle concentration sensor PM2.5":
                     switch (intValue)
                     {
@@ -111,7 +111,7 @@ namespace VitoTestAPI.Helpers
                         case 255:
                             return "Could not find Sensor";
                     }
-                    return (intValue *10).ToString();
+                    return (((intValue - 100) * 4) + 100).ToString();
             }
 
 
