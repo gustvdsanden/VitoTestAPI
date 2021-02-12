@@ -83,13 +83,13 @@ namespace VitoTestAPI.Helpers
                     }
                     return value;
                 case "B4 - Arduino lichtsensor lm393":
-                    if (intValue > 100 && intValue < 0)
+                    if (intValue > 100 || intValue < 0)
                     {
                         return "Loose wire";
                     }
                     return value;
                 case "B4 - GAS Sensor":
-                    if (intValue > 200 && intValue < 0)
+                    if (intValue > 200 || intValue < 0)
                     {
                         return "Loose wire";
                     }
