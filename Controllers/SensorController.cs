@@ -46,6 +46,26 @@ namespace VitoTestAPI.Controllers
         {
             return await _context.Sensors.FindAsync(id);
         }
+        //GET: api/Sensor/Config/{boxid}
+
+        [HttpGet("Config/{boxid}")]
+        public async Task<ActionResult<IEnumerable<Sensor>>> GetSensorsInBox(int boxid)
+        {
+            List<Sensor> sensors = new List<Sensor>();
+            Box box = await _context.Boxes.FindAsync(boxid);
+            string conf = box.ConfiguratieString;
+            if (conf != "" && conf != null)
+            {
+                string[] sensorIDs = conf.Split(",");
+                foreach(string sensorID in sensorIDs)
+                {
+                    sensors.Add(await _context.Sensors.FindAsync(int.Parse(sensorID)));
+                }
+                return sensors;
+            }
+
+            return NotFound(); ;
+        }
 
 
         //POST: api/Sensor

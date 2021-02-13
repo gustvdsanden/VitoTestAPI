@@ -42,6 +42,8 @@ namespace VitoTestAPI.Controllers
             return await _context.Measurements.FindAsync(id);
         }
 
+      
+
 
         //GET: api/Measurement/SensorBox/{sensorid}/{boxid}
         [HttpGet("Sensor/{sensorid}/{boxid}")]
