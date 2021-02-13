@@ -54,12 +54,17 @@ namespace VitoTestAPI.Controllers
             List<Sensor> sensors = new List<Sensor>();
             Box box = await _context.Boxes.FindAsync(boxid);
             string conf = box.ConfiguratieString;
+            Sensor tempSensor = new Sensor();
+            SensorType tempSensorType = new SensorType();
             if (conf != "" && conf != null)
             {
                 string[] sensorIDs = conf.Split(",");
                 foreach(string sensorID in sensorIDs)
                 {
-                    sensors.Add(await _context.Sensors.FindAsync(int.Parse(sensorID)));
+                    tempSensor = await _context.Sensors.FindAsync(int.Parse(sensorID));
+                    tempSensorType = await _context.SensorTypes.FindAsync(tempSensor.SensorTypeID);
+                    tempSensor.Unit = tempSensorType.Unit;
+                    sensors.Add(tempSensor); 
                 }
                 return sensors;
             }
