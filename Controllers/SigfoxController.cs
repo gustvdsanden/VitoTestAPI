@@ -7,6 +7,10 @@ using System;
 using VitoTestAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using BAMCIS.GeoJSON;
+using Newtonsoft.Json;
+using System.Text;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -204,8 +208,8 @@ namespace VitoTestAPI.Controllers
                 measurement.BoxID = box.BoxID;
                 measurement.SensorID = 17;
                 measurement.TimeStamp = dateNow;
-                //string datum = await getGoodWeatherDate(box.BoxID);
-                string datum = "2020-11-03";
+                string datum = await getGoodWeatherDate(box.BoxID);
+                //string datum = "2020-11-03";
                 measurement.Value = sigfoxData[4] + ";" + sigfoxData[5] + ";" + datum;
                 returnList.Add("GPS: " + measurement.Value);
                 _context.Measurements.Add(measurement);
@@ -231,20 +235,20 @@ namespace VitoTestAPI.Controllers
             return result[0];
         }
         //Get good date
-        // api/Terrascope/{boxid}
+        // api/Sigfox/{boxid}
         [HttpPost("{boxid}")]
-        public async Task<string> getGoodWeatherDate(int boxid)
+        public async Task<string> getGoodWeatherDate(int boxid, double cloudFactor = 0.40)
         {
             Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastAsync();
             string[] coords = measurement.Value.Split(";");
-            double scale = 2000;
-            double lon = double.Parse(coords[0]);
-            double lat = double.Parse(coords[1]);
-            List<string> result = await Helpers.Hexhelper.bboxcalc(lon, lat, (double)scale);
-            return result[1];
+            
+            double lat = double.Parse(coords[0]);
+            double lon = double.Parse(coords[1]);
+            List<string> result = await findGoodDateAPI(lon, lat, cloudFactor);
+            return result[0];
         }
         //get good date (first check db)
-        // api/Terrascope/DB/{boxid}
+        // api/Sigfox/DB/{boxid}
         [HttpPost("DB/{boxid}")]
         public async Task<string[]> getDateFromDB(int boxid)
         {
@@ -280,6 +284,60 @@ namespace VitoTestAPI.Controllers
             }
 
             return fullCoords;
+        }
+        private async Task<List<string>> findGoodDateAPI(double lon, double lat, double cloudfactor)
+        {
+            HttpClient client = new HttpClient();
+            double scale = 0.01;
+            string eindatum = DateTime.Now.Date.ToString("yyyy-MM-dd");
+            string begindatum = DateTime.Now.Date.AddDays(-90).ToString("yyyy-MM-dd");
+            string uri = "https://services.terrascope.be/timeseries/v1.0/ts/S2_CLOUDCOVER_GLOBAL/geometry/?startDate=" + begindatum + "&endDate=" + eindatum;
+            //top left
+            Position TLpos = new Position(lon - scale, lat + scale);
+            //bottom left
+            Position BLpos = new Position(lon - scale, lat - scale);
+            //bottom right
+            Position BRpos = new Position(lon + scale, lat - scale);
+            //top right
+            Position TRpos = new Position(lon + scale, lat + scale);
+            Position[] posArray = { TLpos, BLpos, BRpos, TRpos, TLpos };
+            LinearRing[] linearRing = { new LinearRing(posArray) };
+            Polygon polygon = new Polygon(linearRing);
+
+            string Json = JsonConvert.SerializeObject(polygon);
+            var httpcontent = new StringContent(Json, Encoding.UTF8, "application/json");
+            var postResponse = await client.PostAsync(uri, httpcontent);
+            var responseString = await postResponse.Content.ReadAsStringAsync();
+            dynamic responseBody = JsonConvert.DeserializeObject(responseString);
+            dynamic s2Data = responseBody["results"];
+            Console.WriteLine(s2Data);
+            string highDate = "";
+            double highData = 0;
+            foreach (dynamic valuePerJsonDate in responseBody["results"])
+            {
+                string date = valuePerJsonDate["date"];
+                double data = valuePerJsonDate["result"]["average"];
+                if (data < cloudfactor)
+                {
+                    highData = data;
+                    highDate = date;
+                }
+            }
+            List<string> returnList = new List<string>();
+            if (highDate != "")
+            {
+          
+                returnList.Add(highDate);
+                returnList.Add(highData.ToString());
+
+            }
+            else
+            {
+                returnList.Add("No good data found in the last 45 days");
+            }
+
+            return returnList;
+
         }
     }
 }
