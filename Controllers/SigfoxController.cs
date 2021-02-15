@@ -237,14 +237,14 @@ namespace VitoTestAPI.Controllers
         //Get good date
         // api/Sigfox/{boxid}
         [HttpPost("{boxid}")]
-        public async Task<string> getGoodWeatherDate(int boxid, double cloudFactor = 0.40)
+        public async Task<string> getGoodWeatherDate(int boxid, double cloudFactor = 0.01,double scale = 0.1)
         {
             Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastAsync();
             string[] coords = measurement.Value.Split(";");
             
             double lat = double.Parse(coords[0]);
             double lon = double.Parse(coords[1]);
-            List<string> result = await findGoodDateAPI(lon, lat, cloudFactor);
+            List<string> result = await findGoodDateAPI(lon, lat, cloudFactor, scale);
             return result[0];
         }
         //get good date (first check db)
@@ -285,10 +285,9 @@ namespace VitoTestAPI.Controllers
 
             return fullCoords;
         }
-        private async Task<List<string>> findGoodDateAPI(double lon, double lat, double cloudfactor)
+        private async Task<List<string>> findGoodDateAPI(double lon, double lat, double cloudfactor, double scale)
         {
             HttpClient client = new HttpClient();
-            double scale = 0.01;
             string eindatum = DateTime.Now.Date.ToString("yyyy-MM-dd");
             string begindatum = DateTime.Now.Date.AddDays(-90).ToString("yyyy-MM-dd");
             string uri = "https://services.terrascope.be/timeseries/v1.0/ts/S2_CLOUDCOVER_GLOBAL/geometry/?startDate=" + begindatum + "&endDate=" + eindatum;
