@@ -255,7 +255,7 @@ namespace VitoTestAPI.Controllers
 
             Measurement measurement = await _context.Measurements.Where(b => b.SensorID == 17 && b.BoxID == boxid).OrderBy(b => b.TimeStamp).LastOrDefaultAsync();
             string date = "";
-            string[] fullCoords = new string[3];
+            string[] fullCoords = new string[4];
             if (measurement != null && measurement.Value.Length > 0)
             {
                 string[] coords = measurement.Value.Split(";");
@@ -282,7 +282,8 @@ namespace VitoTestAPI.Controllers
             {
                 date = "No Location Data available";
             }
-
+            Box box = _context.Boxes.Find(boxid);
+            fullCoords[3] = box.Name;
             return fullCoords;
         }
         private async Task<List<string>> findGoodDateAPI(double lon, double lat, double cloudfactor, double scale)
